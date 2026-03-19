@@ -195,7 +195,7 @@ header{background:var(--ink);color:var(--paper);padding:1.1rem 2rem;display:flex
 <script>
 const CLUES=[{"id":1,"word":"TRAZA","clue":"Corresponde a la suma de los elementos de su diagonal."},{"id":2,"word":"UNICA","clue":"Cuando un sistema es consistente independiente se dice que su solución es:"},{"id":3,"word":"ORTOGONALES","clue":"Tipo de vectores cuando su producto punto es cero."},{"id":4,"word":"INCONSISTENTE","clue":"Clasificación de un sistema de ecuaciones que no tiene solución."},{"id":5,"word":"NORMAL","clue":"Nombre del vector perpendicular al plano."},{"id":6,"word":"RECTO","clue":"La clasificación del ángulo comprendido entre los vectores u=(-1,3,5/2), v=(1,0,2/5)."},{"id":7,"word":"TRANSPUESTA","clue":"Matriz donde las columnas se cambian por filas y las filas por columnas."},{"id":8,"word":"DIAGONAL","clue":"Matriz donde los elementos de su diagonal no todos son ceros y el resto de ellos son ceros."},{"id":9,"word":"IDENTIDAD","clue":"Matriz donde los elementos de su diagonal son unos y el resto de ellos son ceros."},{"id":10,"word":"SARRUS","clue":"Método para calcular un determinante de 3x3."},{"id":11,"word":"LAPLACE","clue":"Método para calcular un determinante de orden mayor a 3."},{"id":12,"word":"OBTUSO","clue":"Sean los vectores u=(-1,1,1), v=(1,0,-2), tipo de ángulo comprendido entre estos vectores."},{"id":13,"word":"AGUDO","clue":"Tipo de ángulo comprendido entre los vectores u=(1,2,1), v=(2,1,0)."},{"id":14,"word":"PARAMETRICA","clue":"Tipo de ecuación de una recta que expresa cada variable en función de un parámetro t."},{"id":15,"word":"PARALELAS","clue":"Tipo de rectas cuando al dividir los valores de entrada de sus vectores directores dan una misma constante."},{"id":16,"word":"DIRIGIDOS","clue":"Vectores que no salen del origen."}];
 const PTS=10;
-const SCRIPT_URL="https://script.google.com/macros/s/AKfycbxGdtB-XdlZxKrCwxkLDa2k9AYnr3mNscYbvUQGYx70mAeZ6IOdkmKZt8oP9N7WgwEpnQ/exec";
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbx4McV4iv7uRhzrLFB-EV5ihTiFX5zJe2_hs1wuGRjxSnyBOX5xdi4EWOSNKNmsIGDUww/exec";
 const CURSO="Álgebra Lineal";
 const CURSO_CORTO = {
   'Introducción al Cálculo': 'Intro',
@@ -563,12 +563,15 @@ async function submitActivity(timeUp=false){
   const saveEl=document.getElementById('score-save');
   if(!SCRIPT_URL){saveEl.textContent='⚠ Resultado no guardado (sin Google Sheets configurado).';return;}
   saveEl.textContent='⏳ Guardando en Google Sheets…';
-  try{
-    syncProgress('final', score);
-    saveEl.textContent='✅ Resultado guardado en Google Sheets.';
-  }catch(err){
-    saveEl.textContent='❌ Error al guardar. Avisa a tu docente.';
-  }
+  // Wait 1.5s to ensure any in-flight 'progreso' requests arrive before 'final'
+  setTimeout(()=>{
+    try{
+      syncProgress('final', score);
+      saveEl.textContent='✅ Resultado guardado en Google Sheets.';
+    }catch(err){
+      saveEl.textContent='❌ Error al guardar. Avisa a tu docente.';
+    }
+  }, 1500);
 }
 // Wire buttons via addEventListener (mobile-safe, avoids inline onclick issues)
 document.addEventListener('DOMContentLoaded', ()=>{
